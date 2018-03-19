@@ -1,6 +1,3 @@
-;Given an array of size 10. You are to take 10 inputs from the keyboard. 
-;All the number will have to be unique. If you give a duplicate number, 
-;it will not be included in the array. Finally your array will contain 10 unique number.
 
 
 
