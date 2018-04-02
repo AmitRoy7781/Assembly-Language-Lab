@@ -1,0 +1,7 @@
+Take two numbers find the sum if the numbers are prime
+
+main will call add number
+
+add number will call isPrime twice if a number is prime
+
+if one of the two numbers are not prime then print numbers are not prime

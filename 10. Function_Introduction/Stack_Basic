@@ -1,0 +1,22 @@
+Stack	LIFO structure
+
+used for two purposes
+	-Storage
+	-Storage for program control
+
+PUSH/POP -> 		SS and SP
+Based Addressing -> 	SS and BP
+
+
+Used also in Function Call
+
+
+JUMP are of two types
+Conditional		->Short,Near,Far
+Unconditional		->Short,Near,Far
+
+
+For 8086 Processor:
+Short Jump:			Near 1byte or 8bit address shifting (-128 ~ +127) , JMP <disp8>
+Near Jump(Intra Segment):	
+Far Jump(Inter Segment):
