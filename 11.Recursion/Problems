@@ -1,0 +1,12 @@
+1. Find the sum of the following series using recursion:
+2+3+5+8+12+....+n
+
+2. Use recursion to find the nth fibonacci series element
+
+3. Use recursion to find the GCD of two given numbers.
+
+4. Use recursion to remoe the duplicate occurance of characters in a string.
+ex: input: aacbcba
+output:	acb
+
+5. User recursion to search a element in a sorted aray (you will have to use binary search)
