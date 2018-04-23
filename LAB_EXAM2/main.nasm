@@ -1,4 +1,4 @@
-;BIG_MOD
+;RGBY
 
 segment .data
 n:		dq	0	
@@ -6,14 +6,14 @@ two:		dq	2
 temp1:		dq	0
 temp2:		dq	0
 
-fmt_in:		db 	"%lld",0
-fmt_out:	db 	"%lld",0
-dummy:		db	"%lld %lld",10,0
+fmt_in:		db 	"%s",0
+fmt_out1:	db 	"Color Matched",10,0
+fmt_out2:	db 	"Color Not Matched",10,0
 fmt_n:		db 	"",10,0
 	
 
 segment	.bss
-ara:	resq	105
+ara:	resb	105
 used:	resq	105
 
 segment .text
@@ -26,91 +26,87 @@ main:
 	mov rbp,rsp
 	
 	mov RDI,fmt_in
-	mov RSI,n
+	mov RSI,ara
 	mov RAX,0
 	call scanf
 
+	push 0		;R-B
+	push 0		;G-Y
+	push 0		;index
+	call FUNC	
 
-	push 0		;current
-	call PERMUTE
+	add RAX,RBX
+	
 
+	cmp RAX,0
+	je PRINT2
+
+	mov RDI,fmt_out2
+	jmp PRINT
+
+PRINT2:
+	mov RDI,fmt_out1
+
+PRINT:
+	mov RAX,0
+	call printf
 
 	leave
 	ret
 
-PERMUTE:
+FUNC:
 	push RBP
 	mov RBP,RSP
 	
-	mov R8,[RBP+16]		;current
+	mov R8,[RBP+16]		;index
+	mov R9,[RBP+24]		;G-Y
+	mov R10,[RBP+32]	;R-B
 
-	cmp R8,[n]
-	je PRINT
+	mov RAX,0
+	mov AL,[ara+R8]
 
-	mov RBX,1
-
-CHECK_USED:
-	cmp RBX,[n]
-	jg EXIT
+	cmp RAX,0
+	je EXIT
 	
-
-	mov RCX,[used+RBX*8]
-	cmp RCX,0
-	je RECURSIVE_CALL
+	cmp RAX,'R'
+	je RED
 	
-	inc RBX
-	jmp CHECK_USED
+	cmp RAX,'G'
+	je GREEN
+
+	cmp RAX,'B'
+	je BLACK
+
+	jmp YELLOW
+
+
+GREEN:
+	inc R9
+	jmp RECURSIVE_CALL
+
+YELLOW:
+	dec R9
+	jmp RECURSIVE_CALL
+
+RED:
+	inc R10
+	jmp RECURSIVE_CALL
+
+BLACK:
+	dec R10
+	jmp RECURSIVE_CALL
 
 RECURSIVE_CALL:
-
-	mov RAX,1
-	mov [used+RBX*8],RAX
-
-
-	mov [ara+R8*8],RBX
-
-
 	inc R8
-	push RBX
+	push R10
+	push R9
 	push R8
-
-	call PERMUTE
-
-	pop R8
-	pop RBX
-	dec R8
-
-	mov RAX,0
-	mov [used+RBX*8],RAX
-	
-	inc RBX
-	jmp CHECK_USED	
-	
-
-
-PRINT:
-	mov RCX,0
-
-DONE:
-	cmp RCX,[n]
-	je NEW_LINE
-	
-	mov RDI,fmt_out
-	mov RSI,[ara+RCX*8]
-	mov RAX,0
-	mov [temp2],RCX
-	call printf
-	mov RCX,[temp2]
-	inc RCX
-	jmp DONE
-
-
-NEW_LINE:
-	mov RDI,fmt_n
-	mov RAX,0
-	call printf
-
+	call FUNC
+	leave
+	ret
 	
 EXIT:
+	mov RAX,R9
+	mov RBX,R10
 	leave
 	ret
