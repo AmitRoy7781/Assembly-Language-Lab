@@ -1,0 +1,98 @@
+;RGBY
+
+segment .data
+n:		dq	0	
+m:		dq	0	
+two:		dq	2
+temp1:		dq	0
+temp2:		dq	0
+
+fmt_in:		db 	"%lld %lld",0
+fmt_out:	db 	"Man Alive: %lld",10,0
+fmt_out2:	db 	"Color Not Matched",10,0
+fmt_n:		db 	"",10,0
+	
+
+segment	.bss
+ara:	resb	105
+used:	resq	105
+
+segment .text
+global main
+extern scanf,printf
+
+
+main:
+	push rbp
+	mov rbp,rsp
+	
+	mov RDI,fmt_in
+	mov RSI,n
+	mov RDX,m
+	mov RAX,0
+	call scanf
+	
+	mov R8,0
+	mov R9,[m]
+	dec R9
+	mov R10,[n]
+	dec R10
+
+OUTER_LOOP:
+	cmp R8,R10
+	je DONE
+	
+	
+INNER_LOOP:
+	mov RAX,0
+	cmp [used+R9*8],RAX
+	je KILL
+
+
+	inc R9
+	mov RAX,R9
+	mov RDX,0
+	div qword [n]
+
+	mov R9,RDX
+	
+	jmp INNER_LOOP
+
+KILL:
+	mov RAX,1
+	mov [used+R9*8],RAX
+	
+	add R9,[m]
+
+	mov RAX,R9
+	mov RDX,0
+	div qword [n]
+
+	mov R9,RDX
+	inc R8
+	jmp OUTER_LOOP
+	
+		
+DONE:
+	mov RCX,R10
+	
+FIND_ALIVE:
+	
+	mov RDX,[used + RCX*8]
+	cmp RDX,0
+	je PRINT_ALIVE
+
+	dec RCX
+	jmp FIND_ALIVE
+
+PRINT_ALIVE:
+	inc RCX
+	mov RDI,fmt_out
+	mov RSI,RCX
+	mov RAX,0
+	call printf
+	
+
+EXIT:
+	leave
+	ret
