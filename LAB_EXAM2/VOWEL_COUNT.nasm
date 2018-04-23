@@ -80,7 +80,7 @@ OPERATION:
 	cmp RCX,0
 	jl RECURSIVE_CALL
 
-	cmp RCX,32
+	cmp RCX,25
 	jg RECURSIVE_CALL
 	
 
