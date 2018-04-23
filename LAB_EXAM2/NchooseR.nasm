@@ -1,4 +1,4 @@
-;BIG_MOD
+;N choose R
 
 segment .data
 n:		dq	0

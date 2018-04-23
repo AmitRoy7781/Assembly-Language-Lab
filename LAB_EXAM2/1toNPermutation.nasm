@@ -1,4 +1,4 @@
-;BIG_MOD
+;1 to N permutation
 
 segment .data
 n:		dq	0	
